@@ -11,6 +11,7 @@ import zh from '@angular/common/locales/zh';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SetupModule } from './pages/setup/setup.module';
+import { MainModule } from './pages/main/main.module';
 
 registerLocaleData(zh);
 
@@ -25,7 +26,8 @@ registerLocaleData(zh);
     HttpClientModule,
     NgZorroAntdModule,
     AppRoutingModule,
-    SetupModule
+    SetupModule,
+    MainModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
