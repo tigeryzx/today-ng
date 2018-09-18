@@ -1,0 +1,42 @@
+<ul class="menu-wrapper" nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+  <li nz-menu-item [nzSelected]="currentListUuid === 'today'" (click)="click('today')">
+    <span>
+      <i class="anticon anticon-home"></i>
+      <span class="nav-text">Today</span>
+    </span>
+  </li>
+  <li nz-menu-item (click)="click('todo')" [nzSelected]="currentListUuid === 'todo'">
+    <span>
+      <i class="anticon anticon-calendar"></i>
+      <span class="nav-text">TODO</span>
+    </span>
+  </li>
+  <li nz-menu-item *ngFor="let list of lists" [nzSelected]="currentListUuid === list._id" (click)="click(list._id)">
+    <span>
+      <i class="anticon anticon-bars"></i>
+      <span class="nav-text">{{ list.title }}</span>
+    </span>
+  </li>
+</ul>
+
+<nz-modal [(nzVisible)]="addListModalVisible"
+          [nzTitle]="'添加新列表'"
+          [nzClosable]="true"
+          [nzWidth]="420"
+          [nzOkText]="'添加'"
+          [nzCancelText]="'取消'"
+          [nzMaskClosable]="true"
+          (nzOnCancel)="closeAddListModal()"
+          (nzOnOk)="add(listInput.value); listInput.value = '';">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control>
+        <input nz-input
+               #listInput
+               name="listTitle"
+               placeholder="列表名称"
+               (keydown.enter)="add(listInput.value); listInput.value = ''; ">
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
