@@ -31,25 +31,16 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    // combineLatest(this.listService.currentUuid$, this.todoService.todo$)
-    //   .pipe(takeUntil(this.destory$))
-    //   .subscribe(sources => {
-    //     console.log(sources);
-    //     this.processTodos(sources[0], sources[1]);
-    //   });
-
-    this.listService.currentUuid$
+    combineLatest(this.listService.currentUuid$, this.todoService.todo$)
       .pipe(takeUntil(this.destory$))
-      .subscribe(uuid=>{
-        console.log(uuid);
+      .subscribe(sources => {
+        this.processTodos(sources[0], sources[1]);
       });
 
     this.todoService.getAll();
-    // this.listService.getAll();
   }
 
   private processTodos(listUUID: string, todos: Todo[]): void {
-    console.log(todos);
     const filteredTodos = todos
       .filter(todo => {
         // 1.today 显示今日及之前的任务
@@ -68,8 +59,10 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   }
 
-  toggle(uuid: string): void {
-
+  toggle(todo: Todo): void {
+    console.log(todo);
+    todo.completedFlag = !todo.completedFlag;
+    this.todoService.toggleTodoComplete(todo._id);
   }
 
   add(title: string): void {

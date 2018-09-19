@@ -40,7 +40,7 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   click(uuid: string): void {
-    this.currentListUuid = uuid;
+    this.listService.setCurrentUuid(uuid);
   }
 
   openAddListModal(): void {
