@@ -22,7 +22,9 @@ export class ListService {
 
   constructor(
     private store: LocalStorageService
-  ) { }
+  ) { 
+
+  }
 
   private broadCast(): void {
     this.lists$.next(this.lists);
@@ -42,9 +44,9 @@ export class ListService {
     const index = this.lists.findIndex(l => l._id === list._id);
     if (index === -1) {
       this.lists.splice(index, 1, list);
-      this.persist();
-      this.broadCast();
     }
+    this.persist();
+    this.broadCast();
   }
 
   getCurrentListUuid(): SpecialListUUID | string {
