@@ -11,17 +11,21 @@ import { TODOS } from '../local-storage.namespace';
 })
 export class TodoService {
   todo$ = new Subject<Todo[]>();
+  rank$ = new Subject<string>();
 
   private todos: Todo[] = [];
+  private rank: string = 'title';
+
   constructor(
     private listService: ListService,
     private store: LocalStorageService
-  ) { 
+  ) {
     this.todos = this.store.getList(TODOS);
   }
 
   private broadCast(): void {
     this.todo$.next(this.todos);
+    this.rank$.next(this.rank);
   }
 
   private persist(): void {
@@ -39,7 +43,7 @@ export class TodoService {
   }
 
   getByUUID(uuid: string): Todo | null {
-    return this.todos.filter((todo: Todo) => todo._id === uuid)[ 0 ] || null;
+    return this.todos.filter((todo: Todo) => todo._id === uuid)[0] || null;
   }
 
   setTodoToday(uuid: string): void {
@@ -50,13 +54,14 @@ export class TodoService {
     }
   }
 
-  toggleTodoComplete(uuid: string): void {
+  toggleTodoComplete(uuid: string): boolean {
     const todo = this.getByUUID(uuid);
     if (todo) {
       todo.completedFlag = !todo.completedFlag;
       todo.completedAt = todo.completedFlag ? getCurrentTime() : undefined;
       this.persist();
     }
+    return todo.completedFlag;
   }
 
   moveToList(uuid: string, listUUID: string): void {
@@ -103,5 +108,10 @@ export class TodoService {
   deleteInList(uuid: string): void {
     const toDelete = this.todos.filter(t => t.listUUID === uuid);
     toDelete.forEach(t => this.delete(t._id));
+  }
+
+  toggleRank(r: string): void {
+    this.rank = r;
+    this.rank$.next(r);
   }
 }

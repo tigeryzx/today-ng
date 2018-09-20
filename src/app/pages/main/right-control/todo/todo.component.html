@@ -3,10 +3,56 @@
     <nz-list-item class="todo-item" (click)="click(item._id)">
       <nz-list-item-meta [nzTitle]="nzTitle">
         <ng-template #nzTitle>
-          <label nz-checkbox (click)="$event.stopPropagation()" [(ngModel)]="item.completedFlag"></label>
-          <span class="item-plane" [class.strikethrough]="item.completedFlag" (click)="toggle(item)">{{ item.title }}</span>
+          <div nz-row>
+            <div nz-col nzSpan="1">
+              <label nz-checkbox (click)="$event.stopPropagation()" [(ngModel)]="item.completedFlag" (ngModelChange)="toggle(item)"></label>
+            </div>
+            <div nz-col nzSpan="21" (click)="toggle(item)">
+              <span [class.strikethrough]="item.completedFlag">{{ item.title }}</span>
+            </div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="default" (click)="showItemMenu($event,todoContextRef,item)"><i class="anticon anticon-bars"></i></button>
+              &nbsp;
+              <button nz-button nzType="default" (click)="showDetail(item._id)"><i class="anticon anticon-book"></i></button>
+            </div>
+          </div>
         </ng-template>
       </nz-list-item-meta>
     </nz-list-item>
   </ng-template>
 </nz-list>
+
+<ng-template #todoContextRef>
+  <ul nz-menu
+      nzInDropDown
+      (nzClick)="close()">
+    <li nz-menu-item
+        *ngIf="currentListUuid !== 'today'"
+        (click)="setToday()">
+      <i class="anticon anticon-home anticon-right-margin"></i>
+      <span>设为今日</span>
+    </li>
+    <li nz-submenu>
+      <span title>
+        <i class="anticon anticon-bars anticon-right-margin"></i>移动到...</span>
+      <ul>
+        <li nz-menu-item
+            *ngIf="currentContextTodo?.listUUID !== 'todo'"
+            (click)="moveToList('todo')">
+          TODO
+        </li>
+        <li nz-menu-item
+            *ngFor="let list of listsExcept(currentContextTodo.listUUID)"
+            (click)="moveToList(list._id)">
+          {{ list.title }}
+        </li>
+      </ul>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item
+        (click)="delete()">
+      <i class="anticon anticon-delete anticon-right-margin danger"></i>
+      <span class="danger">删除</span>
+    </li>
+  </ul>
+</ng-template>

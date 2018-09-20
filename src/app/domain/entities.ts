@@ -28,5 +28,5 @@ export class List {
     constructor(title: string) {
         this._id = generateUUID();
         this.title = title;
-      }
+    }
 }

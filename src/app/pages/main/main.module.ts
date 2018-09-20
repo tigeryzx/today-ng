@@ -10,6 +10,8 @@ import { HeaderComponent } from './right-control/header/header.component';
 import { QuickAddComponent } from './right-control/quick-add/quick-add.component';
 import { TodoComponent } from './right-control/todo/todo.component';
 import { FormsModule } from '@angular/forms';
+import { SuggestComponent } from './right-control/header/suggest/suggest.component';
+import { DetailComponent } from './detail/detail.component';
 
 @NgModule({
   imports: [
@@ -18,6 +20,6 @@ import { FormsModule } from '@angular/forms';
     MainRoutingModule,
     FormsModule
   ],
-  declarations: [MainComponent, LeftControlComponent, ListComponent, RightControlComponent, HeaderComponent, QuickAddComponent, TodoComponent]
+  declarations: [MainComponent, LeftControlComponent, ListComponent, RightControlComponent, HeaderComponent, QuickAddComponent, TodoComponent, SuggestComponent, DetailComponent]
 })
 export class MainModule { }
